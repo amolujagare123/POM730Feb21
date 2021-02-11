@@ -10,8 +10,10 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 
+import static Utility.Conversion.*;
 import static Utility.DataProviderClass.getMyData;
 
 ;
@@ -26,12 +28,12 @@ public class AddClientDataProviderTest extends DoLogin {
                               String state ,String zip,String country,
                               String phone ,String fax,String mobile,
                               String email,String web,String gender,
-                              String birthdate,String vat ,String tax) throws ClassNotFoundException, SQLException {
+                              String birthdate,String vat ,String tax) throws ClassNotFoundException, SQLException, ParseException {
 
         ArrayList<String> expected = new ArrayList<>();
             expected.add(name);
             expected.add(surname);
-            expected.add(language);
+            expected.add(language.toLowerCase());
             expected.add(add1);
             expected.add(add2);
             expected.add(city);
@@ -101,18 +103,27 @@ public class AddClientDataProviderTest extends DoLogin {
             actual.add(rs.getString("client_city") );
             actual.add(rs.getString("client_state") );
             actual.add(rs.getString("client_zip") );
-            actual.add(rs.getString("client_country") );
+
+            actual.add(convertCountry(rs.getString("client_country")));
+
+
             actual.add(rs.getString("client_phone") );
             actual.add(rs.getString("client_fax") );
             actual.add(rs.getString("client_mobile") );
             actual.add(rs.getString("client_email") );
             actual.add(rs.getString("client_web") );
-            actual.add(rs.getString("client_gender") );
-            actual.add(rs.getString("client_birthdate") );
+
+            actual.add(genderFullForm(rs.getString("client_gender")) );
+
+            actual.add(convertDate(rs.getString("client_birthdate") ));
+
             actual.add(rs.getString("client_vat_id") );
             actual.add(rs.getString("client_tax_code") );
         }
 
+
+        System.out.println("expected="+expected);
+        System.out.println("actual="+actual);
 
         Assert.assertEquals(actual,expected,"all or some records doesnot match");
 

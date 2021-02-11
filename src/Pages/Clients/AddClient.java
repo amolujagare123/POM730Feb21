@@ -128,7 +128,8 @@ public class AddClient {
         containerGender.click();
         driver.findElement(By.xpath("//li[normalize-space()='"+gender+"']")).click();
     }
-
+    @FindBy (xpath = "//input[@id='client_active']")
+   public  WebElement checkBoxActive;
 
     public AddClient(WebDriver driver)
     {
